@@ -1,111 +1,117 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600&family=Fredoka:wght@400;500;600;700&display=swap");
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@theme {
+  /* Cores */
+  --color-urgency-red: #7F0D01;
+  --color-vibrant-orange: #F2940D;
+  --color-primary: #570500;
+  --color-on-primary: #ffffff;
+  --color-on-surface-variant: #59413d;
+  --color-on-surface: #1e1b16;
+  --color-warm-cream-bg: #FDF6ED;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #faf3ea;
+  --color-surface-container: #f4ede4;
+  --color-surface-container-high: #eee7de;
+  --color-surface-container-highest: #e8e2d9;
+  --color-outline-variant: #e1bfb9;
+  --color-outline: #8d716b;
+  --color-soft-blue-accent: #B8D8E3;
+  --color-secondary-fixed: #ffdcbc;
+  --color-secondary: #895100;
+  --color-tertiary: #0a2c34;
+  --color-surface-variant: #e8e2d9;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+  /* Famílias de fonte */
+  --font-fredoka: "Fredoka", sans-serif;
+  --font-headline-xl: "Fredoka", sans-serif;
+  --font-headline-xl-mobile: "Fredoka", sans-serif;
+  --font-headline-lg: "Fredoka", sans-serif;
+  --font-headline-md: "Fredoka", sans-serif;
+  --font-body-lg: "Be Vietnam Pro", sans-serif;
+  --font-body-md: "Be Vietnam Pro", sans-serif;
+  --font-label-lg: "Be Vietnam Pro", sans-serif;
+  --font-label-md: "Be Vietnam Pro", sans-serif;
+
+  /* Tamanhos de fonte (com line-height correspondente) */
+  --text-headline-xl: 48px;
+  --text-headline-xl--font-weight: 550;
+  --text-headline-xl--line-height: 56px;
+  --text-headline-xl-mobile: 36px;
+  --text-headline-xl-mobile--font-weight: 550;
+  --text-headline-xl-mobile--line-height: 44px;
+  --text-headline-lg: 42px;
+  --text-headline-lg--font-weight: 550;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-md: 24px;
+  --text-headline-md--font-weight: 550;
+  --text-headline-md--line-height: 32px;
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-label-lg: 14px;
+  --text-label-lg--line-height: 20px;
+  --text-label-md: 12px;
+  --text-label-md--line-height: 16px;
+
+  /* Espaçamentos customizados (também alimentam max-w-*) */
+  --spacing-section-gap: 80px;
+  --spacing-gutter: 24px;
+  --spacing-container-max: 1200px;
+  --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 40px;
+  --spacing-base: 8px;
+}
+
+.hero-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(253, 246, 237, 0.9) 0%,
+    rgba(253, 246, 237, 0.8) 40%,
+    rgba(253, 246, 237, 0.1) 100%
+  );
+}
+
+@media (max-width: 768px) {
+  .hero-overlay {
+    background: linear-gradient(to bottom, rgba(253, 246, 237, 0.7) 60%, rgba(253, 246, 237, 0.7) 100%);
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+.custom-shadow {
+  box-shadow: 0 10px 40px -10px rgba(127, 13, 1, 0.08);
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-vibrant-orange) transparent;
 }
 
-body {
-  margin: 0;
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-vibrant-orange);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-urgency-red);
+  background-clip: padding-box;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-urgency-red);
+  background-clip: padding-box;
 }
