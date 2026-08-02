@@ -3,12 +3,11 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Heart } from "lucide-react";
 
-export interface Donor {
-  name: string;
-  amount: string;
-  message: string;
-  bg: string;
-  fg: string;
+// 1. Criamos uma interface global para as doações reais que vêm do seu banco
+export interface Doacao {
+  nome: string;
+  valor: string;
+  mensagem: string;
 }
 
 interface RevealProps {
@@ -17,26 +16,13 @@ interface RevealProps {
   delay?: number;
 }
 
-const BASE_DONORS: Donor[] = [
-  { name: "Maria", amount: "R$ 50", message: "Força Ninho! Você é muito corajoso.", bg: "bg-soft-blue-accent", fg: "text-tertiary" },
-  { name: "Ricardo souza maria de joao e pe de feijao", amount: "R$ 100", message: "Mal posso esperar para te ver saudável e correndo!", bg: "bg-surface-container-highest", fg: "text-primary" },
-  { name: "Ana Luiza", amount: "R$ 200", message: "Enviando todo o amor de Portugal!", bg: "bg-secondary-fixed", fg: "text-secondary" },
-  { name: "João", amount: "R$ 30", message: "Uma pequena ajuda para um grande coração.", bg: "bg-soft-blue-accent", fg: "text-tertiary" },
-  { name: "Carla", amount: "R$ 75", message: "Ninho, você é um guerreiro!", bg: "bg-secondary-fixed", fg: "text-secondary" },
-  { name: "Fernando", amount: "R$ 150", message: "Força e fé na recuperação!", bg: "bg-surface-container-highest", fg: "text-primary" },
-];
-
-export const DONORS: Donor[] = Array.from({ length: 3 }, () => BASE_DONORS.map((donor) => ({ ...donor }))).flat();
+// 2. Mantemos apenas as constantes reais e úteis
 export const FOOTER_LINKS = ["Entre em Contato"];
-export const PIX_KEY = "00020126580014BR.GOV.BCB.PIX0136ninho.haven.rescue.pix.key.random.12345";
-export const INSTAGRAM_PROFILE = "https://www.instagram.com/reel/DbUQQCWOGM-/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==";
+export const INSTAGRAM_PROFILE = "https://www.instagram.com/ilca.ia/";
 export const INSTAGRAM_EMBED = "https://www.instagram.com/reel/DbUQQCWOGM-/embed";
-export const PDF_URL = "/transparencia.pdf";
+export const PDF_URL = "/NINHO.pdf";
 
-export function donorInitial(name: string) {
-  return name.trim().charAt(0).toUpperCase();
-}
-
+// 3. O Componente de Animação (Reveal) continua intacto
 export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -72,19 +58,23 @@ export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
   );
 }
 
-export function DonationBubbles() {
+// 4. Se você usar as bolhas flutuantes, elas agora mostram dados REAIS!
+export function DonationBubbles({ doacoes }: { doacoes: Doacao[] }) {
+  // Se não houver doações no banco ainda, não mostra nada
+  if (!doacoes || doacoes.length === 0) return null;
+
   const [queue, setQueue] = useState<number[]>([0, 1, 2]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setQueue((prev) => {
-        const next = (prev[prev.length - 1] + 1) % DONORS.length;
+        const next = (prev[prev.length - 1] + 1) % doacoes.length;
         return [...prev.slice(1), next];
       });
     }, 20000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [doacoes.length]);
 
   return (
     <div className="relative mx-auto w-full max-w-sm overflow-hidden" style={{ height: "290px" }}>
@@ -96,13 +86,16 @@ export function DonationBubbles() {
         }}
       >
         <div className="flex flex-col px-1">
-          {DONORS.map((donor, index) => {
+          {doacoes.map((donor, index) => {
             const queueIndex = queue.indexOf(index);
             const isVisible = queueIndex !== -1;
+            
+            // Tratamento para exibir mensagem amigável se vier vazia
+            const mensagemExibicao = donor.mensagem ? `"${donor.mensagem}"` : "Apoiou a causa com muito amor!";
 
             return (
               <div
-                key={`${donor.name}-${index}`}
+                key={`${donor.nome}-${index}`}
                 className={`transition-all duration-700 ease-out ${
                   isVisible
                     ? "my-1.5 max-h-50 scale-100 translate-y-0 opacity-100"
@@ -112,10 +105,10 @@ export function DonationBubbles() {
                 <div className="flex items-center gap-3 rounded-2xl border border-white/50 bg-white/95 p-4 shadow-2xl backdrop-blur-md">
                   <div className="min-w-0 flex-1">
                     <p className="flex max-w-full items-baseline gap-1 text-sm">
-                      <span className="min-w-0 truncate font-bold text-on-surface">{donor.name}</span>
-                      <span className="shrink-0 whitespace-nowrap font-bold text-on-surface">doou {donor.amount}</span>
+                      <span className="min-w-0 truncate font-bold text-on-surface">{donor.nome}</span>
+                      <span className="shrink-0 whitespace-nowrap font-bold text-on-surface">doou R$ {donor.valor}</span>
                     </p>
-                    <p className="mt-0.5 truncate text-xs italic text-on-surface-variant">"{donor.message}"</p>
+                    <p className="mt-0.5 truncate text-xs italic text-on-surface-variant">{mensagemExibicao}</p>
                   </div>
                   <Heart className="h-5 w-5 shrink-0 text-urgency-red" fill="currentColor" />
                 </div>
