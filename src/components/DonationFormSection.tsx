@@ -165,12 +165,11 @@ export function DonationFormSection() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="px-1 text-label-lg font-label-lg text-on-surface-variant">Mensagem</label>
+                  <label className="px-1 text-label-lg font-label-lg text-on-surface-variant">Mensagem (Opcional)</label>
                   <textarea
                     className="min-h-40 w-full rounded-2xl border-transparent bg-surface-container-low p-4 transition-all duration-200 placeholder:text-outline focus:border-urgency-red focus:ring-2 focus:ring-urgency-red/20"
-                    placeholder="Deixe uma mensagem de carinho para o Ninho..."
+                    placeholder="Deixe uma mensagem de carinho para o Ninho ... "
                     maxLength={500}
-                    required
                     value={form.message}
                     onChange={handleTextAreaChange("message")}
                   />
