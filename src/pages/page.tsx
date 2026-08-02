@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  AllDonorsModal,
-} from "../components/AllDonorsModal";
-import { DONORS } from "../components/ninhoPageShared";
+import { AllDonorsModal } from "../components/AllDonorsModal";
 import { DonationFormSection } from "../components/DonationFormSection";
 import { FooterSection } from "../components/FooterSection";
 import { HeroSection } from "../components/HeroSection";
@@ -14,7 +11,15 @@ import { LoveWallSection } from "../components/LoveWallSection";
 import { NavbarSection } from "../components/NavbarSection";
 import { TransparencySection } from "../components/TransparencySection";
 
-export default function Page() {
+// 1. Criamos a interface para avisar o Typescript o que o Page vai receber do App
+interface PageProps {
+  totalArrecadado: number;
+  muralDoacoes: any[];
+  backendLigado: boolean;
+}
+
+// 2. Extraímos as propriedades aqui nos parâmetros
+export default function Page({ totalArrecadado, muralDoacoes, backendLigado }: PageProps) {
   const [showAllDonors, setShowAllDonors] = useState(false);
 
   return (
@@ -33,8 +38,11 @@ export default function Page() {
       <NavbarSection />
 
       <main>
-        <HeroSection />
-        <LoveWallSection onOpenDonors={() => setShowAllDonors(true)} />
+        {/* 3. Injetamos os dados nos componentes que precisam deles */}
+        <HeroSection totalArrecadado={totalArrecadado} backendLigado={backendLigado} />
+        
+        <LoveWallSection muralDoacoes={muralDoacoes} onOpenDonors={() => setShowAllDonors(true)} />
+        
         <JourneySection />
         <TransparencySection />
         <InstagramSection />
@@ -43,7 +51,13 @@ export default function Page() {
 
       <FooterSection />
 
-      {showAllDonors && <AllDonorsModal donors={DONORS} onClose={() => setShowAllDonors(false)} />}
+      {/* 4. Trocamos o DONORS estático pelo muralDoacoes do banco de dados! */}
+      {showAllDonors && (
+        <AllDonorsModal 
+          donors={muralDoacoes} 
+          onClose={() => setShowAllDonors(false)} 
+        />
+      )}
     </div>
   );
 }

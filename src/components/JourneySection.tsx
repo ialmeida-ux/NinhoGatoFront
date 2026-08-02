@@ -85,7 +85,7 @@ export function JourneySection() {
   }, [activeSlide, slides]);
 
   return (
-    <section className="scroll-mt-20 bg-surface-container-lowest px-margin-mobile py-section-gap md:px-margin-desktop" id="about">
+    <section className="scroll-mt-10 bg-surface-container-lowest px-margin-mobile py-section-gap md:px-margin-desktop" id="about">
       <div className="mx-auto grid max-w-container-max grid-cols-1 items-center gap-20 md:grid-cols-2">
         <Reveal className="order-2 md:order-1">
           <h2 className="mb-6 font-headline-lg text-headline-lg text-primary">A história de ninho</h2>

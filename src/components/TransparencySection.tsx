@@ -5,7 +5,7 @@ import { PDF_URL, Reveal } from "./ninhoPageShared";
 
 export function TransparencySection() {
   return (
-    <section className="scroll-mt-20 bg-warm-cream-bg px-margin-mobile py-section-gap md:px-margin-desktop" id="transparency">
+    <section className="scroll-mt-0 bg-warm-cream-bg px-margin-mobile py-section-gap md:px-margin-desktop" id="transparency">
       <Reveal className="max-w-container-max mx-auto">
         <div className="custom-shadow flex flex-col items-stretch gap-12 rounded-[40px] border border-surface-container-high bg-white p-8 md:flex-row md:p-12">
           <div className="flex-1 flex flex-col justify-center text-left">

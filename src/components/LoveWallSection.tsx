@@ -2,11 +2,26 @@
 
 import { useState } from "react";
 import { ArrowRight, Heart } from "lucide-react";
-import { DONORS, Reveal, donorInitial } from "./ninhoPageShared";
+import { Reveal } from "./ninhoPageShared";
 
-export function LoveWallSection({ onOpenDonors }: { onOpenDonors: () => void }) {
+// 1. Criamos a interface para o formato exato que vem do nosso backend Python
+interface Doacao {
+  nome: string;
+  valor: string;
+  mensagem: string;
+}
+
+// 2. Adicionamos muralDoacoes nas Props do componente
+interface LoveWallSectionProps {
+  onOpenDonors: () => void;
+  muralDoacoes: Doacao[];
+}
+
+export function LoveWallSection({ onOpenDonors, muralDoacoes }: LoveWallSectionProps) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  const visibleDonors = DONORS.slice(-8);
+  
+  // 3. Pegamos os últimos 8 doadores da lista real do banco
+  const visibleDonors = muralDoacoes.slice(-8);
 
   return (
     <section className="scroll-mt-20 mx-auto max-w-container-max overflow-hidden px-margin-mobile py-section-gap md:px-margin-desktop" id="love-wall">
@@ -26,76 +41,84 @@ export function LoveWallSection({ onOpenDonors }: { onOpenDonors: () => void }) 
       </div>
 
       <div className="grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:grid-cols-4">
-        {visibleDonors.map((donor, index) => {
-          const shouldHideOnMobile = index < 2;
+        {/* 4. Mapeamos a lista real e usamos fallback caso não tenha doações ainda */}
+        {visibleDonors.length === 0 ? (
+          <p className="text-on-surface-variant italic col-span-full">Ainda não há doações. Seja o primeiro a apoiar o Ninho!</p>
+        ) : (
+          visibleDonors.map((donor, index) => {
+            const shouldHideOnMobile = index < 2;
+            // Se o usuário não mandou mensagem, colocamos um texto carinhoso
+            const mensagemExibicao = donor.mensagem ? `"${donor.mensagem}"` : "Apoiou a causa com muito amor!";
 
-          return (
-          <Reveal key={`${donor.name}-${index}`} delay={index * 100}>
-  <div
-    className={`flex h-full flex-col justify-between rounded-3xl border border-surface-container-high bg-white p-6 transition-transform duration-300 hover:-translate-y-2 custom-shadow ${
-      shouldHideOnMobile ? "hidden md:flex" : "flex"
-    }`}
-  >
-    <div className="relative">
-      <p
-        className={`font-body-md italic text-on-surface-variant ${
-          expandedIndex === index ? "whitespace-pre-line break-words" : "pr-1"
-        }`}
-        style={
-          expandedIndex === index
-            ? undefined
-            : {
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 3,
-                overflow: "hidden",
-              }
-        }
-      >
-        "{donor.message}"
-      </p>
+            return (
+              <Reveal key={`${donor.nome}-${index}`} delay={index * 100}>
+                <div
+                  className={`flex h-full flex-col justify-between rounded-3xl border border-surface-container-high bg-white p-6 transition-transform duration-300 hover:-translate-y-2 custom-shadow ${
+                    shouldHideOnMobile ? "hidden md:flex" : "flex"
+                  }`}
+                >
+                  <div className="relative">
+                    <p
+                      className={`font-body-md italic text-on-surface-variant ${
+                        expandedIndex === index ? "whitespace-pre-line break-words" : "pr-1"
+                      }`}
+                      style={
+                        expandedIndex === index
+                          ? undefined
+                          : {
+                              display: "-webkit-box",
+                              WebkitBoxOrient: "vertical",
+                              WebkitLineClamp: 3,
+                              overflow: "hidden",
+                            }
+                      }
+                    >
+                      {mensagemExibicao}
+                    </p>
 
-      {expandedIndex !== index && (
-        <button
-          type="button"
-          onClick={() => setExpandedIndex(index)}
-          className="absolute bottom-0 right-0 bg-white pl-6 font-body-md text-sm font-semibold text-vibrant-orange transition-colors hover:text-urgency-red"
-          style={{
-            background:
-              "linear-gradient(to right, transparent, white 40%)",
-          }}
-        >
-          ver mais
-        </button>
-      )}
+                    {expandedIndex !== index && donor.mensagem && donor.mensagem.length > 100 && (
+                      <button
+                        type="button"
+                        onClick={() => setExpandedIndex(index)}
+                        className="absolute bottom-0 right-0 bg-white pl-6 font-body-md text-sm font-semibold text-vibrant-orange transition-colors hover:text-urgency-red"
+                        style={{
+                          background:
+                            "linear-gradient(to right, transparent, white 40%)",
+                        }}
+                      >
+                        ver mais
+                      </button>
+                    )}
 
-      {expandedIndex === index && (
-        <button
-          type="button"
-          onClick={() => setExpandedIndex(null)}
-          className="mt-1 text-sm font-semibold text-vibrant-orange transition-colors hover:text-urgency-red"
-        >
-          recolher
-        </button>
-      )}
-    </div>
+                    {expandedIndex === index && (
+                      <button
+                        type="button"
+                        onClick={() => setExpandedIndex(null)}
+                        className="mt-1 text-sm font-semibold text-vibrant-orange transition-colors hover:text-urgency-red"
+                      >
+                        recolher
+                      </button>
+                    )}
+                  </div>
 
-    <div className="mt-4 flex flex-col">
-      <span className="font-label-lg text-base font-bold text-on-surface truncate">
-        {donor.name}
-      </span>
-      <span className="text-sm text-on-surface-variant">
-        Doou{" "}
-        <span className="font-bold text-vibrant-orange">
-          {donor.amount}
-        </span>
-      </span>
-    </div>
-  </div>
-</Reveal>
-          );
-        })}
+                  <div className="mt-4 flex flex-col">
+                    <span className="font-label-lg text-base font-bold text-on-surface truncate">
+                      {donor.nome}
+                    </span>
+                    <span className="text-sm text-on-surface-variant">
+                      Doou{" "}
+                      <span className="font-bold text-vibrant-orange">
+                        R$ {donor.valor}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })
+        )}
       </div>
+      
       <Reveal delay={400}>
         <div className="mt-8 text-center">
           <button

@@ -5,22 +5,35 @@ import { Reveal } from "./ninhoPageShared";
 import bg from "../assets/bg.png";
 import logo from "../assets/logo.png";
 
-export function HeroSection() {
+// 1. Definimos o "contrato" dos dados que esse componente vai receber do App.tsx
+interface HeroSectionProps {
+  totalArrecadado: number;
+  backendLigado: boolean;
+}
+
+export function HeroSection({ totalArrecadado, backendLigado }: HeroSectionProps) {
   const [progress, setProgress] = useState(0);
+  const metaCampanha = 2000; // Nossa constante da meta
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setProgress(70), 400);
-    return () => window.clearTimeout(timeout);
-  }, []);
+    // 2. Só disparamos a animação quando o backend responder com o valor real
+    if (backendLigado) {
+      // Regra de negócio: Calcula a % e impede que passe de 100% visualmente
+      const porcentagemReal = Math.min((totalArrecadado / metaCampanha) * 100, 100);
+      
+      const timeout = window.setTimeout(() => setProgress(Math.floor(porcentagemReal)), 400);
+      return () => window.clearTimeout(timeout);
+    }
+  }, [totalArrecadado, backendLigado]); // O useEffect reage caso esses valores mudem
 
   return (
     <section className="relative flex min-h-screen w-full items-center overflow-x-hidden pb-8 pt-20" id="home">
       <div className="absolute inset-0 z-0">
         <img 
-  alt="" 
-  className="h-full w-full object-cover object-[80%_center] md:object-[center_20%]" 
-  src={bg} 
-  />
+          alt="" 
+          className="h-full w-full object-cover object-[80%_center] md:object-[center_20%]" 
+          src={bg} 
+        />
         <div className="hero-overlay absolute inset-0 z-10" />
       </div>
 
@@ -31,7 +44,7 @@ export function HeroSection() {
               Meta Atual: Quitar o veterinário
             </span>
             <Reveal className="mb-6 font-headline-lg text-headline-lg text-primary md:mb-8 lg:mb-10">
-              <img src={logo} alt="" />
+              <img src={logo} alt="Logo Ninho Gato" />
             </Reveal>
             <Reveal delay={100}>
               <p className="font-body-lg mb-10 max-w-xl text-body-lg font-medium text-on-surface-variant">
@@ -63,6 +76,7 @@ export function HeroSection() {
                     <p className="text-xs font-body-md text-on-surface-variant">Valor total arrecadado até o momento</p>
                   </div>
                   <div className="text-right">
+                    {/* 3. Exibimos a porcentagem dinâmica aqui */}
                     <span className="block font-headline-md text-vibrant-orange">{progress}%</span>
                   </div>
                 </div>
@@ -73,8 +87,13 @@ export function HeroSection() {
                   />
                 </div>
                 <div className="flex justify-between text-label-md text-on-surface">
-                  <span className="font-bold">R$ 3.500 arrecadados</span>
-                  <span className="text-on-surface-variant">Meta de R$ 5.000</span>
+                  {/* 4. Exibimos o valor real do banco ou um texto de loading */}
+                  <span className="font-bold">
+                    {backendLigado 
+                      ? `R$ ${totalArrecadado.toFixed(2).replace('.', ',')} arrecadados` 
+                      : "Calculando doações..."}
+                  </span>
+                  <span className="text-on-surface-variant">Meta de R$ 2.000</span>
                 </div>
               </div>
             </Reveal>

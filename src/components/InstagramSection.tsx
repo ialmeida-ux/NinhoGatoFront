@@ -1,7 +1,9 @@
 "use client";
 
 import { Camera, Phone } from "lucide-react";
-import { INSTAGRAM_EMBED, INSTAGRAM_PROFILE, Reveal } from "./ninhoPageShared";
+import { 
+  // INSTAGRAM_EMBED, 
+  INSTAGRAM_PROFILE, Reveal } from "./ninhoPageShared";
 
 export function InstagramSection() {
   return (

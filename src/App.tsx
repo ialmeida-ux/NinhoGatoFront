@@ -30,7 +30,13 @@ function App() {
     acordarBackendEBuscarDados();
   }, []); // Essa array vazia [] garante que só rode 1 vez ao abrir a página
 
-  return <Page />
+  return (
+    <Page 
+      totalArrecadado={totalArrecadado} 
+      muralDoacoes={muralDoacoes} 
+      backendLigado={backendLigado} 
+    />
+  )
 }
 
 export default App

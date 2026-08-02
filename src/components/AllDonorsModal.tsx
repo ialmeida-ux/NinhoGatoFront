@@ -2,11 +2,19 @@
 
 import { useEffect } from "react";
 import { X } from "lucide-react";
-import type { Donor } from "./ninhoPageShared";
 
-export function AllDonorsModal({ donors, onClose }: { donors: Donor[]; onClose: () => void }) {
+// 1. Criamos a interface para o formato exato que vem do nosso backend
+interface Doacao {
+  nome: string;
+  valor: string;
+  mensagem: string;
+}
+
+export function AllDonorsModal({ donors, onClose }: { donors: Doacao[]; onClose: () => void }) {
+  
+  // 2. O reduce agora lê "donor.valor"
   const total = donors.reduce((accumulator, donor) => {
-    const amount = Number.parseFloat(donor.amount.replace(/[R$\s]/g, "").replace(",", "."));
+    const amount = Number.parseFloat(donor.valor.replace(/[R$\s]/g, "").replace(",", "."));
     return accumulator + (Number.isNaN(amount) ? 0 : amount);
   }, 0);
 
@@ -42,17 +50,26 @@ export function AllDonorsModal({ donors, onClose }: { donors: Donor[]; onClose: 
               <X className="h-5 w-5" />
             </button>
           </div>
+          
           <div className="space-y-3">
-            {donors.map((donor, index) => (
-              <div key={`${donor.name}-${index}`} className="rounded-2xl border border-surface-container-high bg-white p-5 shadow-sm">
-                <p className="flex flex-wrap items-baseline gap-1 font-bold text-on-surface">
-                  <span>{donor.name}</span>
-                  <span className="shrink-0 text-vibrant-orange">doou {donor.amount}</span>
-                </p>
-                <p className="mt-1 whitespace-pre-line break-words text-sm italic text-on-surface-variant">"{donor.message}"</p>
-              </div>
-            ))}
+            {/* 3. Mapeando com as propriedades corretas do banco */}
+            {donors.map((donor, index) => {
+              const mensagemExibicao = donor.mensagem ? `"${donor.mensagem}"` : "Apoiou a causa com muito amor!";
+
+              return (
+                <div key={`${donor.nome}-${index}`} className="rounded-2xl border border-surface-container-high bg-white p-5 shadow-sm">
+                  <p className="flex flex-wrap items-baseline gap-1 font-bold text-on-surface">
+                    <span>{donor.nome}</span>
+                    <span className="shrink-0 text-vibrant-orange">doou R$ {donor.valor}</span>
+                  </p>
+                  <p className="mt-1 whitespace-pre-line break-words text-sm italic text-on-surface-variant">
+                    {mensagemExibicao}
+                  </p>
+                </div>
+              );
+            })}
           </div>
+          
           <div className="mt-6 border-t border-outline-variant pt-4 text-center font-label-md text-on-surface-variant">
             Total arrecadado:{" "}
             <span className="font-bold text-primary">
