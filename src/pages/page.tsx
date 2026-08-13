@@ -44,7 +44,7 @@ export default function Page({ totalArrecadado, muralDoacoes, backendLigado }: P
         <LoveWallSection muralDoacoes={muralDoacoes} onOpenDonors={() => setShowAllDonors(true)} />
         
         <JourneySection />
-        <TransparencySection />
+        <TransparencySection totalArrecadado={totalArrecadado} backendLigado={backendLigado} />
         <InstagramSection />
         <DonationFormSection />
       </main>

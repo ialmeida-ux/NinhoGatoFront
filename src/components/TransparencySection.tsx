@@ -3,7 +3,12 @@
 import { FileText, ShieldCheck } from "lucide-react";
 import { PDF_URL, Reveal } from "./ninhoPageShared";
 
-export function TransparencySection() {
+interface TransparencySectionProps {
+  totalArrecadado: number;
+  backendLigado: boolean;
+}
+
+export function TransparencySection({ totalArrecadado, backendLigado }: TransparencySectionProps) {
   return (
     <section className="scroll-mt-0 bg-warm-cream-bg px-margin-mobile py-section-gap md:px-margin-desktop" id="transparency">
       <Reveal className="max-w-container-max mx-auto">
@@ -30,7 +35,11 @@ export function TransparencySection() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-on-surface-variant">Saldo Atual:</span>
-                  <span className="font-bold text-vibrant-orange">R$ 0</span>
+                  <span className="font-bold text-vibrant-orange">
+                    {backendLigado
+                      ? `R$ ${totalArrecadado.toFixed(2).replace('.', ',')} arrecadados`
+                      : "Calculando doações..."}
+                  </span>
                 </div>
               </div>
             </div>
