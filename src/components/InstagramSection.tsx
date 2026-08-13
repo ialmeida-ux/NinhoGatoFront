@@ -2,7 +2,7 @@
 
 import { Camera, Phone } from "lucide-react";
 import { 
-  // INSTAGRAM_EMBED, 
+  INSTAGRAM_EMBED, 
   INSTAGRAM_PROFILE, Reveal } from "./ninhoPageShared";
 
 export function InstagramSection() {
@@ -44,7 +44,7 @@ export function InstagramSection() {
               data-instgrm-version="14"
               style={{ background: "#FFF", border: 0, margin: 0, maxWidth: "100%", padding: 0 }}
             >
-              {/* <div style={{ padding: 0 }}>
+              <div style={{ padding: 0 }}>
                 <iframe
                   title="Instagram reel"
                   src={INSTAGRAM_EMBED}
@@ -54,7 +54,7 @@ export function InstagramSection() {
                   allowFullScreen
                   loading="lazy"
                 />
-              </div> */}
+              </div>
             </blockquote>
           </div>
         </div>

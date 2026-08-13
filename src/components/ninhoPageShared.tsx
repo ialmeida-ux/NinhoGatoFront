@@ -19,7 +19,7 @@ interface RevealProps {
 // 2. Mantemos apenas as constantes reais e úteis
 export const FOOTER_LINKS = ["Entre em Contato"];
 export const INSTAGRAM_PROFILE = "https://www.instagram.com/ilca.ia/";
-export const INSTAGRAM_EMBED = "https://www.instagram.com/reel/DbUQQCWOGM-/embed";
+export const INSTAGRAM_EMBED = "https://www.instagram.com/reel/Db_PiomuFAf/embed";
 export const PDF_URL = "/NINHO.pdf";
 
 // 3. O Componente de Animação (Reveal) continua intacto
